@@ -124,3 +124,4 @@ func _apply_profile_refresh(data: Variant) -> void:
 		elif row.get("id", "") == GameState.partner_profile.get("id", ""):
 			GameState.set_partner_profile(row)
 			SpiritSystem.check_hardcore_reset(int(row.get("spirit", 100)))
+	_pending_action = ""
