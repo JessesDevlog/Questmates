@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/pet_corner.gd" id="1"]
+
+[node name="PetCorner" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="BackButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
+
+[node name="ChildList" type="ItemList" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PetRoot" type="Node3D" parent="VBox"]
+unique_name_in_owner = true
+
+[node name="FeedButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Feed Pet (uses child coins)"
+
+[node name="DressButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dress Up"
+
+[node name="StatusLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Parent-mediated Pet Corner"

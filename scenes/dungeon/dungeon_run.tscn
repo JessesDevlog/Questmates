@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/dungeon/dungeon_run_scene.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/dungeon/dungeon_run.gd" id="2"]
+
+[node name="DungeonRunScene" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 5, 8, 8)
+
+[node name="DungeonController" type="Node3D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="AttackButton" type="Button" parent="UI"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 116.0
+offset_bottom = 56.0
+text = "Attack"
+
+[node name="DescendButton" type="Button" parent="UI"]
+unique_name_in_owner = true
+offset_left = 130.0
+offset_top = 16.0
+offset_right = 230.0
+offset_bottom = 56.0
+text = "Descend"
+
+[node name="ExitButton" type="Button" parent="UI"]
+unique_name_in_owner = true
+offset_left = 244.0
+offset_top = 16.0
+offset_right = 344.0
+offset_bottom = 56.0
+text = "Exit & Bank"
+
+[node name="StatusLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 380.0
+offset_bottom = 120.0
+text = "Dungeon active"

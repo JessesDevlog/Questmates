@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/treat_screen.gd" id="1"]
+
+[node name="TreatScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="BackButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Back"
+
+[node name="TitleInput" type="LineEdit" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Treat title (e.g. Sushi night)"
+
+[node name="RequestButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Request Treat"
+
+[node name="TreatList" type="ItemList" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PriceInput" type="LineEdit" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Set coin price"
+text = "25"
+
+[node name="SetPriceButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Set Price"
+
+[node name="RedeemButton" type="Button" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Redeem"
+
+[node name="StatusLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Trust-based fulfillment log"

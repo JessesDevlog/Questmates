@@ -1,0 +1,43 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="QuestMates"
+config/description="Co-op chore gamification RPG"
+run/main_scene="res://scenes/main.tscn"
+config/features=PackedStringArray("4.3", "Mobile")
+config/icon="res://icon.svg"
+
+[autoload]
+
+GameState="*res://scripts/autoload/game_state.gd"
+SupabaseClient="*res://scripts/autoload/supabase_client.gd"
+SupabaseRealtime="*res://scripts/autoload/supabase_realtime.gd"
+SpiritSystem="*res://scripts/autoload/spirit_system.gd"
+ItemCatalog="*res://scripts/autoload/item_catalog.gd"
+QuestService="*res://scripts/services/quest_service.gd"
+ShopService="*res://scripts/services/shop_service.gd"
+TreatService="*res://scripts/services/treat_service.gd"
+DungeonService="*res://scripts/services/dungeon_service.gd"
+CardService="*res://scripts/services/card_service.gd"
+HardcoreService="*res://scripts/services/hardcore_service.gd"
+ContentService="*res://scripts/services/content_service.gd"
+
+[display]
+
+window/size/viewport_width=390
+window/size/viewport_height=844
+window/handheld/orientation=1
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true

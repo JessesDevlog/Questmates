@@ -1,0 +1,24 @@
+# Godot
+.godot/
+*.import
+export/
+
+# Secrets
+secrets.gd
+.env
+.env.local
+
+# macOS / Xcode
+.DS_Store
+*.xcuserstate
+xcuserdata/
+*.xcodeproj/
+*.xcworkspace/
+build/
+
+# IDE
+.idea/
+.vscode/
+
+# Supabase local
+.supabase/

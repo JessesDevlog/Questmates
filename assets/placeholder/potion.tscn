@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1"]
+top_radius = 0.15
+bottom_radius = 0.2
+height = 0.4
+
+[node name="Potion" type="MeshInstance3D"]
+mesh = SubResource("CylinderMesh_1")

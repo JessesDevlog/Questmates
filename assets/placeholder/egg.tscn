@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="SphereMesh" id="SphereMesh_1"]
+radius = 0.25
+
+[node name="Egg" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_1")
