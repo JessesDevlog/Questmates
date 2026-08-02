@@ -54,7 +54,7 @@ func update(table: String, filters: String, payload: Dictionary) -> void:
 	_request("PATCH", path, JSON.stringify(payload), true, {"Prefer": "return=representation"})
 
 
-func rpc(function_name: String, payload: Dictionary = {}) -> void:
+func call_rpc(function_name: String, payload: Dictionary = {}) -> void:
 	var path := "/rest/v1/rpc/%s" % function_name
 	_request("POST", path, JSON.stringify(payload), true)
 

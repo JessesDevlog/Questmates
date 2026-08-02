@@ -46,7 +46,7 @@ func redeem_treat(treat_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "redeem"
-	SupabaseClient.rpc("redeem_treat", {
+	SupabaseClient.call_rpc("redeem_treat", {
 		"treat_id": treat_id,
 		"buyer_profile_id": GameState.profile_id,
 	})

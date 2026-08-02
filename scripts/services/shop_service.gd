@@ -23,7 +23,7 @@ func purchase_item(shop_item_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "purchase"
-	SupabaseClient.rpc("purchase_shop_item", {
+	SupabaseClient.call_rpc("purchase_shop_item", {
 		"shop_item_id": shop_item_id,
 		"buyer_profile_id": GameState.profile_id,
 	})
@@ -33,7 +33,7 @@ func purchase_for_child(shop_item_id: String, child_profile_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "purchase_child"
-	SupabaseClient.rpc("purchase_shop_item_for_child", {
+	SupabaseClient.call_rpc("purchase_shop_item_for_child", {
 		"shop_item_id": shop_item_id,
 		"child_profile_id": child_profile_id,
 	})

@@ -11,7 +11,7 @@ func _ready() -> void:
 
 func get_asset_path(item_key: String) -> String:
 	if _catalog.has(item_key):
-		return _catalog[item_key].get("asset_path", "")
+		return String(_catalog[item_key].get("asset_path", ""))
 	return "res://assets/placeholder/box.tscn"
 
 
@@ -28,18 +28,21 @@ func register_item(item_key: String, data: Dictionary) -> void:
 
 
 func merge_remote_content(items: Array) -> void:
-	for item in items:
-		if typeof(item) != TYPE_DICTIONARY:
+	for item_variant in items:
+		if typeof(item_variant) != TYPE_DICTIONARY:
 			continue
-		var key := item.get("item_key", "")
+		var item: Dictionary = item_variant
+		var key: String = String(item.get("item_key", ""))
 		if key.is_empty():
 			continue
+		var metadata_variant: Variant = item.get("metadata", {})
+		var metadata: Dictionary = metadata_variant if metadata_variant is Dictionary else {}
 		_catalog[key] = {
-			"type": item.get("type", ""),
-			"name": item.get("name", key),
-			"description": item.get("description", ""),
-			"asset_path": item.get("asset_path", "res://assets/placeholder/box.tscn"),
-			"metadata": item.get("metadata", {}),
+			"type": String(item.get("type", "")),
+			"name": String(item.get("name", key)),
+			"description": String(item.get("description", "")),
+			"asset_path": String(item.get("asset_path", "res://assets/placeholder/box.tscn")),
+			"metadata": metadata,
 		}
 
 

@@ -22,7 +22,7 @@ func reset_household() -> void:
 	if not GameState.is_online or GameState.household_id.is_empty():
 		return
 	_pending_action = "reset"
-	SupabaseClient.rpc("reset_household", {"household_id": GameState.household_id})
+	SupabaseClient.call_rpc("reset_household", {"household_id": GameState.household_id})
 
 
 func _on_request_completed(result: Dictionary) -> void:

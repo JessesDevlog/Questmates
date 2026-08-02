@@ -20,7 +20,7 @@ func apply_penalty_on_open() -> void:
 func restore_spirit(target_profile_id: String, amount: int, buyer_profile_id: String, cost: int) -> void:
 	if not GameState.is_online:
 		return
-	SupabaseClient.rpc("restore_spirit", {
+	SupabaseClient.call_rpc("restore_spirit", {
 		"target_profile_id": target_profile_id,
 		"buyer_profile_id": buyer_profile_id,
 		"amount": amount,

@@ -90,7 +90,7 @@ func process_turn(action: Dictionary) -> void:
 		_level_data["cleared"] = true
 		var loot_options := ["card_slash", "card_arrow", "card_heal", "card_fire", "cosmetic_hat_red"]
 		var loot_key := loot_options[randi() % loot_options.size()]
-		SupabaseClient.rpc("mark_level_cleared", {"run_id": _run_id, "loot_key": loot_key})
+		SupabaseClient.call_rpc("mark_level_cleared", {"run_id": _run_id, "loot_key": loot_key})
 		DungeonService.send_event(_run_id, "level_cleared", {"depth": _depth, "loot_key": loot_key})
 	else:
 		_process_enemy_turns()

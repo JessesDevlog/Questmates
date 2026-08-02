@@ -81,10 +81,12 @@ func _process(delta: float) -> void:
 
 
 func _handle_message(message: Dictionary) -> void:
-	var event := message.get("event", "")
+	var event: String = String(message.get("event", ""))
 	if event == "broadcast":
-		var payload := message.get("payload", {})
+		var payload_variant: Variant = message.get("payload", {})
+		var payload: Dictionary = payload_variant if payload_variant is Dictionary else {}
 		channel_message.emit(_channel, payload)
 	elif event == "postgres_changes":
-		var payload := message.get("payload", {})
+		var change_variant: Variant = message.get("payload", {})
+		var payload: Dictionary = change_variant if change_variant is Dictionary else {}
 		channel_message.emit(_channel, {"type": "db_change", "data": payload})

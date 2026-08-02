@@ -39,7 +39,7 @@ func join_lobby(run_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "join_lobby"
-	SupabaseClient.rpc("join_dungeon_lobby", {
+	SupabaseClient.call_rpc("join_dungeon_lobby", {
 		"run_id": run_id,
 		"profile_id": GameState.profile_id,
 	})
@@ -49,7 +49,7 @@ func start_run(run_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "start"
-	SupabaseClient.rpc("start_dungeon_run", {"run_id": run_id})
+	SupabaseClient.call_rpc("start_dungeon_run", {"run_id": run_id})
 
 
 func send_event(run_id: String, event_type: String, payload: Dictionary) -> void:
@@ -69,14 +69,14 @@ func exit_and_bank(run_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "exit"
-	SupabaseClient.rpc("bank_dungeon_run", {"run_id": run_id})
+	SupabaseClient.call_rpc("bank_dungeon_run", {"run_id": run_id})
 
 
 func descend(run_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "descend"
-	SupabaseClient.rpc("descend_dungeon", {"run_id": run_id})
+	SupabaseClient.call_rpc("descend_dungeon", {"run_id": run_id})
 
 
 func get_current_run() -> Dictionary:

@@ -47,7 +47,7 @@ func approve_quest(quest_id: String) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "approve"
-	SupabaseClient.rpc("approve_quest", {"quest_id": quest_id, "approver_profile_id": GameState.profile_id})
+	SupabaseClient.call_rpc("approve_quest", {"quest_id": quest_id, "approver_profile_id": GameState.profile_id})
 
 
 func reject_quest(quest_id: String, note: String = "") -> void:
@@ -58,14 +58,14 @@ func apply_missed_quest_penalties() -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "penalties"
-	SupabaseClient.rpc("apply_missed_quest_penalties", {"household_id": GameState.household_id})
+	SupabaseClient.call_rpc("apply_missed_quest_penalties", {"household_id": GameState.household_id})
 
 
 func spawn_from_template(template_id: String, assignee_profile_id: String, deadline_hours: int = 24) -> void:
 	if not GameState.is_online:
 		return
 	_pending_action = "spawn_template"
-	SupabaseClient.rpc("spawn_quest_from_template", {
+	SupabaseClient.call_rpc("spawn_quest_from_template", {
 		"template_id": template_id,
 		"assignee_profile_id": assignee_profile_id,
 		"deadline_hours": deadline_hours,
