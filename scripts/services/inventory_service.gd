@@ -43,7 +43,7 @@ func place_env_item(item_key: String, position: Dictionary) -> void:
 		"household_id": GameState.household_id,
 		"placer_profile_id": GameState.profile_id,
 		"item_key": item_key,
-		"position": position,
+		"placement_data": position,
 	})
 
 

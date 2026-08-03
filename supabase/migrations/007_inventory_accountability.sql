@@ -13,14 +13,18 @@ from merged m
 where i.profile_id = m.profile_id and i.item_key = m.item_key
   and i.acquired_at = m.first_at;
 
-delete from public.inventory_items i
-using (
-  select profile_id, item_key, min(id) as keep_id
-  from public.inventory_items
-  group by profile_id, item_key
-  having count(*) > 1
-) d
-where i.profile_id = d.profile_id and i.item_key = d.item_key and i.id != d.keep_id;
+delete from public.inventory_items
+where id in (
+  select id from (
+    select id,
+      row_number() over (
+        partition by profile_id, item_key
+        order by acquired_at asc nulls last, id::text asc
+      ) as rn
+    from public.inventory_items
+  ) ranked
+  where rn > 1
+);
 
 create unique index if not exists inventory_items_profile_item_key_idx
   on public.inventory_items (profile_id, item_key);
@@ -135,7 +139,7 @@ create or replace function public.place_home_base_item(
   household_id uuid,
   placer_profile_id uuid,
   item_key text,
-  position jsonb
+  placement_data jsonb
 )
 returns jsonb
 language plpgsql
@@ -176,7 +180,7 @@ begin
   values (
     place_home_base_item.household_id,
     content.id,
-    position || jsonb_build_object('item_key', place_home_base_item.item_key),
+    placement_data || jsonb_build_object('item_key', place_home_base_item.item_key),
     placer_profile_id
   )
   returning id into placement_id;
