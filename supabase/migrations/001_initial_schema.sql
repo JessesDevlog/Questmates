@@ -234,7 +234,8 @@ alter table public.content_items enable row level security;
 create policy households_select on public.households for select using (id = public.current_household_id());
 create policy households_update on public.households for update using (id = public.current_household_id());
 
-create policy profiles_select on public.profiles for select using (household_id = public.current_household_id());
+create policy profiles_select_own on public.profiles for select using (auth_user_id = auth.uid());
+create policy profiles_select_household on public.profiles for select using (household_id = public.current_household_id());
 create policy profiles_update on public.profiles for update using (id = public.current_profile_id() or household_id = public.current_household_id());
 
 create policy child_profiles_all on public.child_profiles for all using (household_id = public.current_household_id()) with check (household_id = public.current_household_id());
@@ -266,3 +267,9 @@ create policy content_items_select on public.content_items for select using (is_
 alter publication supabase_realtime add table public.dungeon_events;
 alter publication supabase_realtime add table public.dungeon_runs;
 alter publication supabase_realtime add table public.quests;
+
+-- PostgREST role grants
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete on all tables in schema public to anon, authenticated;
+grant usage, select on all sequences in schema public to anon, authenticated;
+grant execute on all functions in schema public to anon, authenticated;

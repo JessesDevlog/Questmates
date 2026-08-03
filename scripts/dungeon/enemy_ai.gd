@@ -2,7 +2,7 @@ extends RefCounted
 class_name EnemyAI
 
 static func get_next_move(enemy: Dictionary, player_positions: Array, tiles: Array) -> Vector2i:
-	var pos := Vector2i(enemy.get("x", 0), enemy.get("y", 0))
+	var pos := Vector2i(int(enemy.get("x", 0)), int(enemy.get("y", 0)))
 	var aggro_range := int(enemy.get("aggro_range", 4))
 
 	var closest: Vector2i = Vector2i(-1, -1)
@@ -10,7 +10,7 @@ static func get_next_move(enemy: Dictionary, player_positions: Array, tiles: Arr
 	for p in player_positions:
 		if typeof(p) != TYPE_DICTIONARY:
 			continue
-		var player_pos := Vector2i(p.get("x", 0), p.get("y", 0))
+		var player_pos := Vector2i(int(p.get("x", 0)), int(p.get("y", 0)))
 		var dist := abs(player_pos.x - pos.x) + abs(player_pos.y - pos.y)
 		if dist < closest_dist:
 			closest_dist = dist

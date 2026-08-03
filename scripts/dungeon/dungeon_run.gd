@@ -32,19 +32,29 @@ func _render_level() -> void:
 		if child.name != "Camera3D":
 			child.queue_free()
 
-	for y in _level_data.get("tiles", []).size():
-		var row: Array = _level_data["tiles"][y]
+	var tiles_data: Array = _level_data.get("tiles", [])
+	for y in tiles_data.size():
+		var row_variant: Variant = tiles_data[y]
+		if typeof(row_variant) != TYPE_ARRAY:
+			continue
+		var row: Array = row_variant
 		for x in row.size():
 			if row[x] == 1:
 				_spawn_tile(x, y, Color(0.3, 0.3, 0.35))
 			else:
 				_spawn_tile(x, y, Color(0.5, 0.55, 0.6))
 
-	for enemy in _level_data.get("enemies", []):
-		_spawn_marker(enemy.get("x", 0), enemy.get("y", 0), Color(0.9, 0.2, 0.2))
+	for enemy_variant in _level_data.get("enemies", []):
+		if typeof(enemy_variant) != TYPE_DICTIONARY:
+			continue
+		var enemy: Dictionary = enemy_variant
+		_spawn_marker(int(enemy.get("x", 0)), int(enemy.get("y", 0)), Color(0.9, 0.2, 0.2))
 
-	for p in _player_positions:
-		_spawn_marker(p.get("x", 0), p.get("y", 0), Color(0.2, 0.7, 0.9))
+	for p_variant in _player_positions:
+		if typeof(p_variant) != TYPE_DICTIONARY:
+			continue
+		var p: Dictionary = p_variant
+		_spawn_marker(int(p.get("x", 0)), int(p.get("y", 0)), Color(0.2, 0.7, 0.9))
 
 
 func _spawn_tile(x: int, y: int, color: Color) -> void:
@@ -73,8 +83,8 @@ func _spawn_marker(x: int, y: int, color: Color) -> void:
 
 
 func process_turn(action: Dictionary) -> void:
-	var profile_id := action.get("profile_id", GameState.profile_id)
-	var action_type := action.get("type", "basic_attack")
+	var profile_id: String = String(action.get("profile_id", GameState.profile_id))
+	var action_type: String = String(action.get("type", "basic_attack"))
 
 	var result: Dictionary
 	if action_type == "basic_attack":
@@ -89,7 +99,7 @@ func process_turn(action: Dictionary) -> void:
 	if _combat.all_enemies_defeated():
 		_level_data["cleared"] = true
 		var loot_options := ["card_slash", "card_arrow", "card_heal", "card_fire", "cosmetic_hat_red"]
-		var loot_key := loot_options[randi() % loot_options.size()]
+		var loot_key: String = loot_options[randi() % loot_options.size()]
 		SupabaseClient.call_rpc("mark_level_cleared", {"run_id": _run_id, "loot_key": loot_key})
 		DungeonService.send_event(_run_id, "level_cleared", {"depth": _depth, "loot_key": loot_key})
 	else:
@@ -98,10 +108,13 @@ func process_turn(action: Dictionary) -> void:
 
 func _process_enemy_turns() -> void:
 	var tiles: Array = _level_data.get("tiles", [])
-	for enemy in _level_data.get("enemies", []):
+	for enemy_variant in _level_data.get("enemies", []):
+		if typeof(enemy_variant) != TYPE_DICTIONARY:
+			continue
+		var enemy: Dictionary = enemy_variant
 		if int(enemy.get("hp", 0)) <= 0:
 			continue
-		var next := EnemyAI.get_next_move(enemy, _player_positions, tiles)
+		var next: Vector2i = EnemyAI.get_next_move(enemy, _player_positions, tiles)
 		enemy["x"] = next.x
 		enemy["y"] = next.y
 	_render_level()

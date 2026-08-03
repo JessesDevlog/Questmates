@@ -1,6 +1,18 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/treat_screen.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_receipt"]
+bg_color = Color(0.18, 0.22, 0.28, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.78, 0.35, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="TreatScreen" type="Control"]
 layout_mode = 3
@@ -32,54 +44,125 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="VBox" type="VBoxContainer" parent="Margin"]
+[node name="Scroll" type="ScrollContainer" parent="Margin"]
 layout_mode = 2
-theme_override_constants/separation = 16
+size_flags_vertical = 3
 
-[node name="Title" type="Label" parent="Margin/VBox"]
+[node name="VBox" type="VBoxContainer" parent="Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Margin/Scroll/VBox"]
 layout_mode = 2
 theme_type_variation = &"title"
-text = "Treats"
+text = "Treats Caravan"
 
-[node name="BackButton" type="Button" parent="Margin/VBox"]
+[node name="BackButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Back"
+text = "Close"
 
-[node name="TitleInput" type="LineEdit" parent="Margin/VBox"]
+[node name="RequestSection" type="VBoxContainer" parent="Margin/Scroll/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="RequestTitle" type="Label" parent="Margin/Scroll/VBox/RequestSection"]
+layout_mode = 2
+text = "Request a real-world treat"
+
+[node name="TitleInput" type="LineEdit" parent="Margin/Scroll/VBox/RequestSection"]
 unique_name_in_owner = true
 layout_mode = 2
-placeholder_text = "Treat title (e.g. Sushi night)"
+placeholder_text = "e.g. Sushi night"
 
-[node name="RequestButton" type="Button" parent="Margin/VBox"]
+[node name="DescriptionInput" type="TextEdit" parent="Margin/Scroll/VBox/RequestSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+placeholder_text = "Optional details for your partner"
+
+[node name="RequestButton" type="Button" parent="Margin/Scroll/VBox/RequestSection"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Request Treat"
 
-[node name="TreatList" type="ItemList" parent="Margin/VBox"]
+[node name="ReceiptPanel" type="PanelContainer" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 240)
+visible = false
 layout_mode = 2
-size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_receipt")
 
-[node name="PriceInput" type="LineEdit" parent="Margin/VBox"]
+[node name="ReceiptLabel" type="Label" parent="Margin/Scroll/VBox/ReceiptPanel"]
 unique_name_in_owner = true
 layout_mode = 2
-placeholder_text = "Set coin price"
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+autowrap_mode = 3
+horizontal_alignment = 1
+
+[node name="PendingTitle" type="Label" parent="Margin/Scroll/VBox"]
+layout_mode = 2
+text = "Needs pricing"
+
+[node name="PendingList" type="ItemList" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+
+[node name="AvailableTitle" type="Label" parent="Margin/Scroll/VBox"]
+layout_mode = 2
+text = "Available to redeem"
+
+[node name="AvailableList" type="ItemList" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+
+[node name="LogTitle" type="Label" parent="Margin/Scroll/VBox"]
+layout_mode = 2
+text = "Redemption log"
+
+[node name="LogList" type="ItemList" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+
+[node name="PriceInput" type="LineEdit" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+placeholder_text = "Coin price"
 text = "25"
 
-[node name="SetPriceButton" type="Button" parent="Margin/VBox"]
-unique_name_in_owner = true
+[node name="ActionRow" type="HBoxContainer" parent="Margin/Scroll/VBox"]
 layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SetPriceButton" type="Button" parent="Margin/Scroll/VBox/ActionRow"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Set Price"
 
-[node name="RedeemButton" type="Button" parent="Margin/VBox"]
+[node name="RedeemButton" type="Button" parent="Margin/Scroll/VBox/ActionRow"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+size_flags_horizontal = 3
 text = "Redeem"
 
-[node name="StatusLabel" type="Label" parent="Margin/VBox"]
+[node name="FulfillButton" type="Button" parent="Margin/Scroll/VBox/ActionRow"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mark Fulfilled"
+
+[node name="StatusLabel" type="Label" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Trust-based fulfillment log"
 autowrap_mode = 3

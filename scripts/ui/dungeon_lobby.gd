@@ -4,7 +4,7 @@ extends Control
 
 
 func _ready() -> void:
-	%BackButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/ui/hub_screen.tscn"))
+	%BackButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/world/town.tscn"))
 	%CreateLobbyButton.pressed.connect(_create_lobby)
 	%JoinLobbyButton.pressed.connect(_join_lobby)
 	%StartRunButton.pressed.connect(_start_run)
@@ -29,22 +29,22 @@ func _create_lobby() -> void:
 
 
 func _join_lobby() -> void:
-	var run := DungeonService.get_current_run()
+	var run: Dictionary = DungeonService.get_current_run()
 	if run.is_empty():
 		DungeonService.fetch_active_run()
 		return
-	DungeonService.join_lobby(run.get("id", ""))
+	DungeonService.join_lobby(String(run.get("id", "")))
 
 
 func _start_run() -> void:
-	var run := DungeonService.get_current_run()
+	var run: Dictionary = DungeonService.get_current_run()
 	if run.is_empty():
 		return
-	DungeonService.start_run(run.get("id", ""))
+	DungeonService.start_run(String(run.get("id", "")))
 
 
 func _enter_dungeon() -> void:
-	var run := DungeonService.get_current_run()
+	var run: Dictionary = DungeonService.get_current_run()
 	if run.get("status", "") != "active":
 		status_label.text = "Both players must be ready and run must be active"
 		return

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://cs4j6ewe2pys"]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/login_screen.tscn" id="1"]
 
-[node name="Main" type="Node"]
-[node name="LoginScreen" parent="." instance=ExtResource("1")]
+[node name="Main" type="Node" unique_id=322133869]
+
+[node name="LoginScreen" parent="." unique_id=2105324536 instance=ExtResource("1")]

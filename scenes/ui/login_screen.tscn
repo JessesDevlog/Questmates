@@ -42,11 +42,6 @@ theme_type_variation = &"title"
 text = "QuestMates"
 horizontal_alignment = 1
 
-[node name="NameInput" type="LineEdit" parent="Margin/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "Display name (sign up)"
-
 [node name="EmailInput" type="LineEdit" parent="Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -71,5 +66,5 @@ text = "Sign Up"
 [node name="StatusLabel" type="Label" parent="Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Configure secrets.gd with Supabase URL and anon key"
+text = "Set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY in secrets.gd (see docs/SUPABASE_SETUP.md)"
 autowrap_mode = 3

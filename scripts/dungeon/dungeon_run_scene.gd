@@ -5,11 +5,11 @@ extends Node3D
 
 
 func _ready() -> void:
-	var run := DungeonService.get_current_run()
+	var run: Dictionary = DungeonService.get_current_run()
 	if run.is_empty():
 		status_label.text = "No active run"
 		return
-	SupabaseRealtime.connect_dungeon_channel(run.get("id", ""))
+	SupabaseRealtime.connect_dungeon_channel(String(run.get("id", "")))
 	dungeon_controller.start_run(run)
 	%AttackButton.pressed.connect(_basic_attack)
 	%DescendButton.pressed.connect(_descend)
@@ -21,10 +21,14 @@ func _basic_attack() -> void:
 	var enemies: Array = dungeon_controller._level_data.get("enemies", [])
 	if enemies.is_empty():
 		return
+	var enemy_variant: Variant = enemies[0]
+	if typeof(enemy_variant) != TYPE_DICTIONARY:
+		return
+	var enemy: Dictionary = enemy_variant
 	dungeon_controller.process_turn({
 		"type": "basic_attack",
 		"profile_id": GameState.profile_id,
-		"target_enemy_id": enemies[0].get("id", ""),
+		"target_enemy_id": enemy.get("id", ""),
 	})
 
 
@@ -37,7 +41,7 @@ func _descend() -> void:
 
 func _exit_run() -> void:
 	dungeon_controller.exit_run()
-	get_tree().change_scene_to_file("res://scenes/ui/hub_screen.tscn")
+	get_tree().change_scene_to_file("res://scenes/world/town.tscn")
 
 
 func _on_event(event: Dictionary) -> void:

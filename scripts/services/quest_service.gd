@@ -55,7 +55,7 @@ func reject_quest(quest_id: String, note: String = "") -> void:
 
 
 func apply_missed_quest_penalties() -> void:
-	if not GameState.is_online:
+	if not GameState.is_online or GameState.household_id.is_empty():
 		return
 	_pending_action = "penalties"
 	SupabaseClient.call_rpc("apply_missed_quest_penalties", {"household_id": GameState.household_id})
@@ -117,7 +117,10 @@ func _refresh_profiles() -> void:
 func _apply_profile_refresh(data: Variant) -> void:
 	if typeof(data) != TYPE_ARRAY:
 		return
-	for row in data:
+	for row_variant in data:
+		if typeof(row_variant) != TYPE_DICTIONARY:
+			continue
+		var row: Dictionary = row_variant
 		if row.get("id", "") == GameState.profile_id:
 			GameState.set_profile_data(row)
 			SpiritSystem.check_hardcore_reset(int(row.get("spirit", 100)))

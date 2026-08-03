@@ -6,7 +6,7 @@ extends Control
 
 
 func _ready() -> void:
-	%BackButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/ui/hub_screen.tscn"))
+	%BackButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/world/town.tscn"))
 	%FeedButton.pressed.connect(_feed_pet)
 	%DressButton.pressed.connect(_dress_pet)
 	_populate_children()
@@ -14,7 +14,10 @@ func _ready() -> void:
 
 func _populate_children() -> void:
 	child_list.clear()
-	for child in GameState.child_profiles:
+	for child_variant in GameState.child_profiles:
+		if typeof(child_variant) != TYPE_DICTIONARY:
+			continue
+		var child: Dictionary = child_variant
 		child_list.add_item("%s (%d coins)" % [child.get("display_name", ""), int(child.get("coins", 0))])
 
 
@@ -24,17 +27,21 @@ func _get_selected_child() -> Dictionary:
 		return {}
 	if idx[0] >= GameState.child_profiles.size():
 		return {}
-	return GameState.child_profiles[idx[0]]
+	var child_variant: Variant = GameState.child_profiles[idx[0]]
+	return child_variant if child_variant is Dictionary else {}
 
 
 func _feed_pet() -> void:
-	var child := _get_selected_child()
+	var child: Dictionary = _get_selected_child()
 	if child.is_empty():
 		status_label.text = "Select a child profile"
 		return
-	for item in ShopService.get_items():
+	for item_variant in ShopService.get_items():
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = item_variant
 		if item.get("type", "") == "pet_food":
-			ShopService.purchase_for_child(item.get("id", ""), child.get("id", ""))
+			ShopService.purchase_for_child(String(item.get("id", "")), String(child.get("id", "")))
 			status_label.text = "Fed pet for %s" % child.get("display_name", "")
 			_refresh_pet(child)
 			return
@@ -42,12 +49,11 @@ func _feed_pet() -> void:
 
 
 func _dress_pet() -> void:
-	var child := _get_selected_child()
+	var child: Dictionary = _get_selected_child()
 	if child.is_empty():
 		return
-	var config := child.get("pet_config", {})
-	if typeof(config) != TYPE_DICTIONARY:
-		config = {}
+	var config_variant: Variant = child.get("pet_config", {})
+	var config: Dictionary = config_variant if config_variant is Dictionary else {}
 	config["outfit"] = "cosmetic_outfit_blue"
 	SupabaseClient.update("child_profiles", "id=eq.%s" % child.get("id", ""), {"pet_config": config})
 	status_label.text = "Outfit applied for %s" % child.get("display_name", "")
@@ -57,7 +63,6 @@ func _dress_pet() -> void:
 func _refresh_pet(child: Dictionary) -> void:
 	for c in pet_root.get_children():
 		c.queue_free()
-	var pet_config := child.get("pet_config", {})
-	if typeof(pet_config) != TYPE_DICTIONARY:
-		pet_config = {}
+	var pet_config_variant: Variant = child.get("pet_config", {})
+	var pet_config: Dictionary = pet_config_variant if pet_config_variant is Dictionary else {}
 	CharacterCustomizer.apply_avatar_to_node(pet_root, pet_config)

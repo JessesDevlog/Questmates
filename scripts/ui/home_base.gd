@@ -19,7 +19,10 @@ func _ready() -> void:
 
 func _on_shop_updated(items: Array) -> void:
 	prop_list.clear()
-	for item in items:
+	for item_variant in items:
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = item_variant
 		if item.get("type", "") == "env_asset":
 			prop_list.add_item("%s - %d coins" % [item.get("name", ""), int(item.get("price", 0))])
 
@@ -28,23 +31,30 @@ func _buy_prop() -> void:
 	var idx := prop_list.get_selected_items()
 	if idx.is_empty():
 		return
-	var items := ShopService.get_items()
-	var env_items: Array = []
-	for item in items:
-		if item.get("type", "") == "env_asset":
-			env_items.append(item)
+	var env_items: Array = _get_env_shop_items()
 	if idx[0] >= env_items.size():
 		return
-	var shop_item := env_items[idx[0]]
-	ShopService.purchase_item(shop_item.get("id", ""))
+	var shop_item: Dictionary = env_items[idx[0]]
+	ShopService.purchase_item(String(shop_item.get("id", "")))
 	SupabaseClient.insert("home_base_items", {
 		"household_id": GameState.household_id,
 		"content_item_id": shop_item.get("content_item_id", null),
 		"position": {"x": randi_range(0, 4), "y": 0, "z": randi_range(0, 4)},
 		"placed_by_profile_id": GameState.profile_id,
 	})
-	status_label.text = "Placed %s in home base" % shop_item.get("name", "")
+	status_label.text = "Placed %s in home base" % String(shop_item.get("name", ""))
 	call_deferred("_refresh_placed")
+
+
+func _get_env_shop_items() -> Array:
+	var env_items: Array = []
+	for item_variant in ShopService.get_items():
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = item_variant
+		if item.get("type", "") == "env_asset":
+			env_items.append(item)
+	return env_items
 
 
 func _refresh_placed() -> void:
@@ -63,10 +73,12 @@ func _on_request_completed(result: Dictionary) -> void:
 		return
 	for c in base_root.get_children():
 		c.queue_free()
-	for row in data:
-		var pos := row.get("position", {})
-		if typeof(pos) != TYPE_DICTIONARY:
-			pos = {}
+	for row_variant in data:
+		if typeof(row_variant) != TYPE_DICTIONARY:
+			continue
+		var row: Dictionary = row_variant
+		var pos_variant: Variant = row.get("position", {})
+		var pos: Dictionary = pos_variant if pos_variant is Dictionary else {}
 		var mesh_instance := MeshInstance3D.new()
 		var mesh := BoxMesh.new()
 		mesh.size = Vector3(0.4, 0.6, 0.4)

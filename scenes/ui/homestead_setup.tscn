@@ -1,0 +1,122 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/homestead_setup.gd" id="1"]
+
+[node name="HomesteadSetup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.14, 0.18, 1)
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Scroll" type="ScrollContainer" parent="Margin"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Margin/Scroll/VBox"]
+layout_mode = 2
+theme_type_variation = &"title"
+text = "Your Homestead"
+horizontal_alignment = 1
+
+[node name="Tabs" type="HBoxContainer" parent="Margin/Scroll/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CreateTabButton" type="Button" parent="Margin/Scroll/VBox/Tabs"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Create"
+
+[node name="JoinTabButton" type="Button" parent="Margin/Scroll/VBox/Tabs"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+toggle_mode = true
+text = "Join"
+
+[node name="CreatePanel" type="VBoxContainer" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CreateHint" type="Label" parent="Margin/Scroll/VBox/CreatePanel"]
+layout_mode = 2
+text = "Name your homestead. You will get an invite code to share with your partner."
+autowrap_mode = 2
+
+[node name="HomesteadNameInput" type="LineEdit" parent="Margin/Scroll/VBox/CreatePanel"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Homestead name"
+
+[node name="CreateButton" type="Button" parent="Margin/Scroll/VBox/CreatePanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Create Homestead"
+
+[node name="InviteCodeLabel" type="Label" parent="Margin/Scroll/VBox/CreatePanel"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="ContinueAfterCreateButton" type="Button" parent="Margin/Scroll/VBox/CreatePanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Continue"
+
+[node name="JoinPanel" type="VBoxContainer" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="JoinHint" type="Label" parent="Margin/Scroll/VBox/JoinPanel"]
+layout_mode = 2
+text = "Enter the invite code from your partner's homestead."
+autowrap_mode = 2
+
+[node name="InviteCodeInput" type="LineEdit" parent="Margin/Scroll/VBox/JoinPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Invite code"
+
+[node name="JoinButton" type="Button" parent="Margin/Scroll/VBox/JoinPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Join Homestead"
+
+[node name="StatusLabel" type="Label" parent="Margin/Scroll/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 2

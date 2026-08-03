@@ -32,67 +32,74 @@ theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
-[node name="VBox" type="VBoxContainer" parent="Margin"]
+[node name="Scroll" type="ScrollContainer" parent="Margin"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 18
 
-[node name="Title" type="Label" parent="Margin/VBox"]
+[node name="Title" type="Label" parent="Margin/Scroll/VBox"]
 layout_mode = 2
 theme_type_variation = &"title"
 text = "Home"
 horizontal_alignment = 1
 
-[node name="SpiritLabel" type="Label" parent="Margin/VBox"]
+[node name="SpiritLabel" type="Label" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Spirit: 100"
 
-[node name="CoinsLabel" type="Label" parent="Margin/VBox"]
+[node name="CoinsLabel" type="Label" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Coins: 0"
 
-[node name="PartnerLabel" type="Label" parent="Margin/VBox"]
+[node name="PartnerLabel" type="Label" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Partner"
 
-[node name="QuestsButton" type="Button" parent="Margin/VBox"]
+[node name="QuestsButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Quest Board"
 
-[node name="ShopButton" type="Button" parent="Margin/VBox"]
+[node name="ShopButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Merchant Shop"
 
-[node name="ProfileButton" type="Button" parent="Margin/VBox"]
+[node name="ProfileButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Profile & Cards"
 
-[node name="TreatsButton" type="Button" parent="Margin/VBox"]
+[node name="TreatsButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Treats"
 
-[node name="PetCornerButton" type="Button" parent="Margin/VBox"]
+[node name="PetCornerButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Pet Corner"
 
-[node name="HomeBaseButton" type="Button" parent="Margin/VBox"]
+[node name="HomeBaseButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Home Base"
 
-[node name="DungeonButton" type="Button" parent="Margin/VBox"]
+[node name="DungeonButton" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Dungeon"
 
-[node name="HardcoreToggle" type="Button" parent="Margin/VBox"]
+[node name="HardcoreToggle" type="Button" parent="Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Hardcore: OFF"

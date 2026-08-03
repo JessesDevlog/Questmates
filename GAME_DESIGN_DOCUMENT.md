@@ -160,9 +160,16 @@ This is a design discipline more than a technology choice, but it drives several
   - **Potions** — restore Spirit (the accountability sink described above).
   - **Cosmetics** — outfits, hats, hair, skins for characters and pets.
   - **Pets** — companions with their own small progression (fed with coins/treats).
-  - **Environment-building assets** — decorative items for a shared "home base" you both build up over time (a nice persistent visual trophy case of your progress).
+  - **Environment-building assets** — decorative items for a shared navigable **town** you both rebuild over time (Dark Cloud–style: buy pieces from the Builder Yard caravan, place on empty plots). Town is the primary post-login world — not a menu hub.
   - **Stat-boosting items** — minor combat buffs for the adventure mode.
   - **Real-world treats** (see 6.5) — the standout feature.
+
+### 6.4b Home Base Town (primary world)
+
+- After login, players land in a **walkable isometric low-poly town** — not a button menu.
+- **Points of interest** reached by tile movement: Dungeon Gate, Clothes Caravan (cosmetics), Weapons Caravan (cards), Builder Yard (env props), Treats Caravan, Quest Board, Your Home (profile/cards), Pet Corner.
+- Meta screens (quests, shops, treats, profile) open as **fullscreen overlays** from POIs; closing returns to the town.
+- **Rebuild loop:** earn coins → buy env assets at Builder Yard → enter build mode → tap empty plots to place → syncs via `home_base_items` for both partners.
 
 ### 6.5 Real-World Wishlist Treats
 
@@ -180,7 +187,7 @@ A **turn-based, deck-building, low-poly isometric dungeon crawler** — both par
 - **Enemy AI:** Simple tile-based movement; aggro based on tile distance from players.
 - **Combat & cards:** Turn-based combat with unlimited basic weapon attacks plus a **loadout of special cards** (short-range, long-range, magic, movement, healing). Pick 3 cards as loadout at start (each usable once per run, refills next run). Character level unlocks more loadout slots (3 → 4 → 5…). Earn new cards from merchant, dungeon loot, and loot crates. Deck-building over time — choose which cards to bring before each run.
 - **Spirit integration:** Spirit tier at dungeon entry applies buff/nerf multipliers to combat stats.
-- **Progression:** Loot feeds back into shop/inventory; persistent home base shows shared progress.
+- **Progression:** Loot feeds back into shop/inventory; persistent **town rebuild** shows shared progress.
 
 ### 6.7 Character Customization
 
@@ -207,7 +214,7 @@ A **turn-based, deck-building, low-poly isometric dungeon crawler** — both par
 - **Rendering:** Use Godot 4's **Forward Mobile** renderer (designed specifically for mobile/iOS performance, as opposed to Forward+ which targets desktop). Keep dynamic lights minimal; bake lighting where possible.
 - **Camera/world:** True isometric or a fixed-angle 3D perspective (recommend 3D low-poly meshes over 2D isometric sprites — easier to reuse assets across camera angles, easier to source affordable asset packs like Kenney.nl (free/CC0) or Synty Studios "POLYGON" series (paid but inexpensive, industry-standard for exactly this look), and Godot's 3D tooling is mature).
 - **Performance budget:** Target mid-range iPhone (e.g., iPhone 12/13 class) as your performance floor since that's realistically what most households own; keep draw calls and triangle counts modest (low-poly art style naturally enforces this), avoid heavy post-processing.
-- **UI:** The chore/shop/quest-board screens are plain 2D UI (Godot `Control` nodes) — build these first since they're the highest-value, lowest-risk part of the app.
+- **UI:** Chore/shop/quest screens are **2D overlays** opened from town POIs — the town is the game shell, not a hub menu.
 
 ---
 
@@ -254,16 +261,17 @@ Row-Level Security (Supabase RLS) should scope every table to `household_id` mat
 - Set up Godot 4 project, Supabase project, Apple Developer enrollment.
 - Basic auth + household/profile creation, get a "Hello Household" build running via TestFlight on both phones.
 
-**Phase 1 — MVP: The Chore Loop**
-- Quest CRUD (create/accept/decline/submit/approve/miss), coins/XP, health drain, manual "apply penalties on open."
-- Bare-bones merchant shop (potions + a handful of cosmetics), basic character customization (a few slots).
-- This alone is already a usable, fun product for the two of you — ship it before touching the dungeon mode.
+**Phase 1 — MVP: Town + Chore Loop**
+- Walkable isometric town hub with POI caravans (not a button menu).
+- Quest CRUD, coins/XP, Spirit drain, category shops (cosmetics, weapons/cards, treats, builder env).
+- Dark Cloud–style town rebuild: buy env props, place on plots, sync to partner.
+- Ship this before deep dungeon polish.
 
 **Phase 2 — Shared World Polish**
 - Real-world treat request/pricing/redemption flow.
 - Kid sub-profiles + pets.
 - Automated penalty cron via Edge Function; push notifications.
-- Home-base/environment-building visuals using coin-purchased assets.
+- Richer town tile art and prop meshes (Kenney/Synty packs).
 
 **Phase 3 — The Adventure Mode**
 - Turn-based/card combat prototype, a handful of hand-built rooms, one short story arc.

@@ -17,6 +17,8 @@ var partner_profile: Dictionary = {}
 var child_profiles: Array = []
 var is_online: bool = true
 var cached_at: int = 0
+var onboarding_gender: String = "male"
+var onboarding_display_name: String = ""
 
 const CACHE_PATH := "user://cache_state.json"
 
@@ -47,10 +49,20 @@ func clear_session() -> void:
 
 func set_profile_data(data: Dictionary) -> void:
 	profile = data
-	profile_id = data.get("id", "")
-	household_id = data.get("household_id", "")
+	profile_id = String(data.get("id", ""))
+	var hh: Variant = data.get("household_id", "")
+	household_id = "" if hh == null else String(hh)
 	profile_changed.emit()
 	_save_local_cache()
+
+
+func is_onboarding_complete() -> bool:
+	return not profile_id.is_empty() and not household_id.is_empty()
+
+
+func clear_onboarding_temp() -> void:
+	onboarding_gender = "male"
+	onboarding_display_name = ""
 
 
 func set_household_data(data: Dictionary) -> void:

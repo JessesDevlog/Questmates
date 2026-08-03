@@ -2,7 +2,6 @@ extends Control
 
 @onready var email_input: LineEdit = %EmailInput
 @onready var password_input: LineEdit = %PasswordInput
-@onready var name_input: LineEdit = %NameInput
 @onready var status_label: Label = %StatusLabel
 
 var _pending: String = ""
@@ -13,13 +12,11 @@ func _ready() -> void:
 	%SignUpButton.pressed.connect(_on_sign_up)
 	SupabaseClient.request_completed.connect(_on_request_completed)
 	SupabaseClient.request_failed.connect(_on_auth_failed)
-	SpiritSystem.apply_penalty_on_open()
 
-	if GameState.access_token and not GameState.profile_id.is_empty():
-		_enter_hub()
+	if GameState.access_token and not GameState.user_id.is_empty():
+		_begin_profile_load()
 	elif GameState.access_token:
-		_pending = "profile"
-		SupabaseClient.select("profiles", "*", "&auth_user_id=eq.%s" % GameState.user_id)
+		status_label.text = "Session invalid. Sign in again."
 
 
 func _on_sign_in() -> void:
@@ -34,51 +31,63 @@ func _on_sign_up() -> void:
 	SupabaseClient.sign_up(
 		email_input.text.strip_edges(),
 		password_input.text,
-		name_input.text.strip_edges()
+		""
 	)
+
+
+func _begin_profile_load() -> void:
+	if GameState.user_id.is_empty():
+		status_label.text = "Auth succeeded but user id is missing."
+		return
+	_pending = "profile"
+	SupabaseClient.select("profiles", "*", "&auth_user_id=eq.%s" % GameState.user_id)
 
 
 func _on_request_completed(result: Dictionary) -> void:
 	match _pending:
 		"auth":
-			if not GameState.access_token.is_empty():
-				_pending = "profile"
-				SupabaseClient.select("profiles", "*", "&auth_user_id=eq.%s" % GameState.user_id)
+			if GameState.access_token.is_empty():
+				status_label.text = "Sign up may require email confirmation. Disable it in Supabase Auth settings, or confirm your email."
+				_pending = ""
+				return
+			_begin_profile_load()
+			return
 		"profile":
 			var data: Variant = result.get("data", [])
 			if typeof(data) == TYPE_ARRAY and not data.is_empty():
-				GameState.set_profile_data(data[0])
-				_pending = "household"
-				SupabaseClient.select("households", "*", "&id=eq.%s" % GameState.household_id)
+				var row_variant: Variant = data[0]
+				if row_variant is Dictionary:
+					GameState.set_profile_data(row_variant)
+				if GameState.profile_id.is_empty():
+					status_label.text = "Profile missing. Run migration 009 and sign up again."
+					_pending = ""
+					return
+				_pending = ""
+				_route_after_profile()
 			else:
-				status_label.text = "Profile missing. Run Supabase onboarding SQL or sign up again."
-		"household":
-			var data: Variant = result.get("data", [])
-			if typeof(data) == TYPE_ARRAY and not data.is_empty():
-				GameState.set_household_data(data[0])
-			_pending = "partner"
-			var filters := "&household_id=eq.%s&neq.id,%s" % [GameState.household_id, GameState.profile_id]
-			SupabaseClient.select("profiles", "*", filters)
-		"partner":
-			var data: Variant = result.get("data", [])
-			if typeof(data) == TYPE_ARRAY and not data.is_empty():
-				GameState.set_partner_profile(data[0])
-			_pending = "children"
-			SupabaseClient.select("child_profiles", "*", "&household_id=eq.%s" % GameState.household_id)
-		"children":
-			var data: Variant = result.get("data", [])
-			if typeof(data) == TYPE_ARRAY:
-				GameState.set_child_profiles(data)
-			ContentService.fetch_remote_content()
-			SupabaseRealtime.connect_household_channel(GameState.household_id)
-			_enter_hub()
-	_pending = ""
+				status_label.text = "Profile missing. Run migration 009, then sign up again."
+				_pending = ""
+			return
+
+
+func _route_after_profile() -> void:
+	if GameState.is_onboarding_complete():
+		status_label.text = "Loading..."
+		HomesteadService.load_session_context(_enter_main_menu)
+	else:
+		_enter_onboarding()
 
 
 func _on_auth_failed(error: String) -> void:
+	if _pending.is_empty():
+		return
 	status_label.text = error
 	_pending = ""
 
 
-func _enter_hub() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/hub_screen.tscn")
+func _enter_onboarding() -> void:
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/ui/character_select.tscn")
+
+
+func _enter_main_menu() -> void:
+	get_tree().call_deferred("change_scene_to_file", "res://scenes/ui/main_menu.tscn")

@@ -30,8 +30,9 @@ func play_card(attacker_id: String, card_id: String, target: Dictionary) -> Dict
 	if not card_uses_remaining.has(card_id) or card_uses_remaining[card_id] <= 0:
 		return {"ok": false, "error": "Card already used this run"}
 
-	var item := ItemCatalog.get_item(card_id)
-	var meta := item.get("metadata", {})
+	var item: Dictionary = ItemCatalog.get_item(card_id)
+	var meta_variant: Variant = item.get("metadata", {})
+	var meta: Dictionary = meta_variant if meta_variant is Dictionary else {}
 	var mult := float(modifiers.get("player_damage_mult", 1.0))
 	card_uses_remaining[card_id] -= 1
 

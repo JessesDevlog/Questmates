@@ -12,7 +12,6 @@ func _ready() -> void:
 func fetch_remote_content() -> void:
 	_pending_action = "fetch"
 	SupabaseClient.select("content_items", "*", "&is_active=eq.true")
-	ShopService.fetch_shop_items()
 
 
 func _on_request_completed(result: Dictionary) -> void:
@@ -21,4 +20,5 @@ func _on_request_completed(result: Dictionary) -> void:
 		if typeof(data) == TYPE_ARRAY:
 			ItemCatalog.merge_remote_content(data)
 			content_updated.emit()
-	_pending_action = ""
+		_pending_action = ""
+		ShopService.fetch_shop_items()

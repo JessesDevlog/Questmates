@@ -70,9 +70,9 @@ text = "Create Quest"
 
 [node name="QuestList" type="ItemList" parent="Margin/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 240)
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 0
 
 [node name="AcceptButton" type="Button" parent="Margin/VBox"]
 unique_name_in_owner = true

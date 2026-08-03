@@ -29,29 +29,32 @@ SpiritSystem="*res://scripts/autoload/spirit_system.gd"
 ItemCatalog="*res://scripts/autoload/item_catalog.gd"
 QuestService="*res://scripts/services/quest_service.gd"
 ShopService="*res://scripts/services/shop_service.gd"
+InventoryService="*res://scripts/services/inventory_service.gd"
 TreatService="*res://scripts/services/treat_service.gd"
 DungeonService="*res://scripts/services/dungeon_service.gd"
 CardService="*res://scripts/services/card_service.gd"
 HardcoreService="*res://scripts/services/hardcore_service.gd"
 ContentService="*res://scripts/services/content_service.gd"
+HomesteadService="*res://scripts/services/homestead_service.gd"
+DisplaySettings="*res://scripts/autoload/display_settings.gd"
+PlayerSettings="*res://scripts/autoload/player_settings.gd"
+DevKnobsSettings="*res://scripts/autoload/dev_knobs_settings.gd"
 
 [display]
 
 window/size/viewport_width=390
 window/size/viewport_height=844
-window/size/window_width_override=780
-window/size/window_height_override=1688
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
-window/handheld/orientation=1
-
-[gui]
-
-theme/custom="res://resources/ui_theme.tres"
+window/stretch/aspect="expand"
+window/handheld/orientation=6
 
 [dotnet]
 
 project/assembly_name="QuestMates"
+
+[gui]
+
+theme/custom="res://resources/ui_theme.tres"
 
 [rendering]
 

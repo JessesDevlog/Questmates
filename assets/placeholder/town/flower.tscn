@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 0.25
+
+[sub_resource type="StandardMaterial3D" id="Mat_1"]
+albedo_color = Color(0.95, 0.55, 0.75)
+
+[node name="Flower" type="MeshInstance3D"]
+mesh = SubResource("CylinderMesh_1")
+surface_material_override/0 = SubResource("Mat_1")

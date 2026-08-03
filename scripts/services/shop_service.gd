@@ -43,6 +43,19 @@ func get_items() -> Array:
 	return _items.duplicate()
 
 
+func get_items_by_category(category: String) -> Array:
+	if category.is_empty():
+		return get_items()
+	var filtered: Array = []
+	for item_variant in _items:
+		if typeof(item_variant) != TYPE_DICTIONARY:
+			continue
+		var item: Dictionary = item_variant
+		if String(item.get("type", "")) == category:
+			filtered.append(item)
+	return filtered
+
+
 func _on_request_completed(result: Dictionary) -> void:
 	match _pending_action:
 		"fetch":
@@ -55,4 +68,6 @@ func _on_request_completed(result: Dictionary) -> void:
 			if typeof(data) == TYPE_DICTIONARY:
 				purchase_completed.emit(data)
 			fetch_shop_items()
+			InventoryService.fetch_inventory()
+			InventoryService.refresh_profiles()
 	_pending_action = ""

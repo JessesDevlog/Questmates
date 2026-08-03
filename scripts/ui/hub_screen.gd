@@ -14,6 +14,7 @@ func _ready() -> void:
 	%HomeBaseButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/ui/home_base.tscn"))
 	%DungeonButton.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/ui/dungeon_lobby.tscn"))
 	%HardcoreToggle.pressed.connect(_toggle_hardcore)
+	SpiritSystem.apply_penalty_on_open()
 	_refresh()
 
 
@@ -21,14 +22,14 @@ func _refresh() -> void:
 	var spirit := int(GameState.profile.get("spirit", 100))
 	spirit_label.text = "Spirit: %d (%s)" % [spirit, GameState.get_spirit_tier(spirit)]
 	coins_label.text = "Coins: %d" % int(GameState.profile.get("coins", 0))
-	var partner_name := GameState.partner_profile.get("display_name", "Partner")
+	var partner_name: String = String(GameState.partner_profile.get("display_name", "Partner"))
 	var partner_spirit := int(GameState.partner_profile.get("spirit", 100))
 	partner_label.text = "%s Spirit: %d" % [partner_name, partner_spirit]
-	%HardcoreToggle.text = "Hardcore: %s" % ("ON" if GameState.household.get("hardcore_mode", false) else "OFF")
+	%HardcoreToggle.text = "Hardcore: %s" % ("ON" if bool(GameState.household.get("hardcore_mode", false)) else "OFF")
 
 
 func _toggle_hardcore() -> void:
-	var enabled := not GameState.household.get("hardcore_mode", false)
+	var enabled: bool = not bool(GameState.household.get("hardcore_mode", false))
 	HardcoreService.toggle_hardcore(enabled)
 	GameState.household["hardcore_mode"] = enabled
 	_refresh()

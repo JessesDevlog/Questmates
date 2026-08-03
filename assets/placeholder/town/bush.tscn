@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="SphereMesh" id="SphereMesh_1"]
+radius = 0.35
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="Mat_1"]
+albedo_color = Color(0.35, 0.65, 0.35)
+
+[node name="Bush" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_1")
+surface_material_override/0 = SubResource("Mat_1")

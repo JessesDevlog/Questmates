@@ -12,12 +12,13 @@ func clamp_spirit(value: int) -> int:
 
 
 func apply_penalty_on_open() -> void:
-	if not GameState.is_online:
+	if not GameState.is_online or GameState.household_id.is_empty():
 		return
 	QuestService.apply_missed_quest_penalties()
 
 
 func restore_spirit(target_profile_id: String, amount: int, buyer_profile_id: String, cost: int) -> void:
+	## Deprecated: use InventoryService.use_item with a potion from inventory instead.
 	if not GameState.is_online:
 		return
 	SupabaseClient.call_rpc("restore_spirit", {

@@ -99,17 +99,21 @@ func get_combat_modifiers() -> Dictionary:
 func _on_request_completed(result: Dictionary) -> void:
 	match _pending_action:
 		"fetch_run", "create_lobby", "join_lobby", "start", "exit", "descend":
-			var data: Variant = result.get("data", {})
+			var data: Variant = result.get("data", [])
 			if typeof(data) == TYPE_ARRAY and data.size() > 0:
-				_current_run = data[0]
+				var row_variant: Variant = data[0]
+				if row_variant is Dictionary:
+					_current_run = row_variant
 			elif typeof(data) == TYPE_DICTIONARY:
 				_current_run = data
 			lobby_updated.emit(_current_run.duplicate())
 			dungeon_state_updated.emit(_current_run.duplicate())
 		"event":
-			var data: Variant = result.get("data", {})
+			var data: Variant = result.get("data", [])
 			if typeof(data) == TYPE_ARRAY and data.size() > 0:
-				dungeon_event_received.emit(data[0])
+				var row_variant: Variant = data[0]
+				if row_variant is Dictionary:
+					dungeon_event_received.emit(row_variant)
 			elif typeof(data) == TYPE_DICTIONARY:
 				dungeon_event_received.emit(data)
 	_pending_action = ""

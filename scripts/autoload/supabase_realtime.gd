@@ -51,7 +51,7 @@ func _connect_realtime() -> void:
 	if not SupabaseClient.is_configured():
 		return
 	var ws_url := SecretsConfig.SUPABASE_URL.replace("https://", "wss://") + "/realtime/v1/websocket"
-	var params := "apikey=%s&vsn=1.0.0" % SecretsConfig.SUPABASE_ANON_KEY
+	var params := "apikey=%s&vsn=1.0.0" % SecretsConfig.get_api_key()
 	if not GameState.access_token.is_empty():
 		params += "&access_token=%s" % GameState.access_token
 	_peer.connect_to_url("%s?%s" % [ws_url, params])
